@@ -23,7 +23,7 @@ app.register(fastifyCors, {
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: "Stockify API",
+      title: "Inventra API",
       description: "API for inventory management",
       version: "1.0.0",
     },
