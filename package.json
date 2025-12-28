@@ -1,16 +1,19 @@
 {
   "name": "inventra",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A comprehensive inventory management system designed to streamline stock tracking and reporting for businesses of all sizes.",
   "private": true,
   "scripts": {
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
     "check": "exec biome check --write"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "Inventory Management System",
+    "Stock Tracking",
+    "Business Solution"
+  ],
+  "author": "Caio Cesar",
   "license": "ISC",
   "packageManager": "pnpm@10.26.2",
   "devDependencies": {
