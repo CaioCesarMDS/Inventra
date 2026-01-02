@@ -1,28 +1,17 @@
-import { relations } from "drizzle-orm";
 import { integer, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
-import { companyTable } from "@/db/schema/company";
-import { unitTable } from "@/db/schema/unit";
 
 export const addressTable = pgTable("addresses", {
-	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	company_id: integer()
-		.notNull()
-		.references(() => companyTable.id),
-	street: varchar({ length: 255 }).notNull(),
-	neighborhood: varchar({ length: 255 }).notNull(),
-	city: varchar({ length: 255 }).notNull(),
-	state: varchar({ length: 255 }).notNull(),
-	country: varchar({ length: 255 }).notNull(),
-	zip_code: varchar({ length: 10 }).notNull(),
-	complement: varchar({ length: 255 }),
-	created_at: timestamp().defaultNow().notNull(),
-	updated_at: timestamp().defaultNow().notNull(),
-	deleted_at: timestamp(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  street: varchar("street", { length: 255 }).notNull(),
+  neighborhood: varchar("neighborhood", { length: 255 }).notNull(),
+  city: varchar("city", { length: 255 }).notNull(),
+  state: varchar("state", { length: 255 }).notNull(),
+  country: varchar("country", { length: 255 }).notNull(),
+  zipCode: varchar("zip_code", { length: 10 }).notNull(),
+  complement: varchar("complement", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
-
-export const addressRelations = relations(addressTable, ({ one }) => ({
-	unit: one(unitTable, {
-		fields: [addressTable.id],
-		references: [unitTable.address_id],
-	}),
-}));

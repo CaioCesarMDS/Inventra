@@ -1,5 +1,6 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
+  check,
   integer,
   pgTable,
   timestamp,
@@ -7,43 +8,42 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { v7 as uuidv7 } from "uuid";
 import { addressTable } from "@/db/schema/address";
-import { companyTable } from "@/db/schema/company";
 import { statusEnum, unitTypeEnum } from "@/db/schema/enums";
-import { userUnitTable } from "@/db/schema/userUnit";
 
 export const unitTable = pgTable(
   "units",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    public_id: uuid("public_id")
-      .$defaultFn(() => uuidv7())
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    publicId: uuid("public_id")
       .notNull()
+      .$defaultFn(() => sql`gen_random_uuid()`)
       .unique(),
-    name: varchar({ length: 255 }).notNull(),
-    code: varchar({ length: 10 }).notNull().unique(),
-    contact_phone: varchar({ length: 15 }).notNull().unique(),
-    capacity: integer(),
-    status: statusEnum().default("ACTIVE").notNull(),
-    unit_type: unitTypeEnum().default("WAREHOUSE").notNull(),
-    company_id: integer()
-      .notNull()
-      .references(() => companyTable.id),
-    address_id: integer()
+    name: varchar("name", { length: 255 }).notNull(),
+    code: varchar("code", { length: 10 }).notNull().unique(),
+    contactPhone: varchar("contact_phone", { length: 15 }).notNull(),
+    totalCapacity: integer("total_capacity"),
+    status: statusEnum("status").default("ACTIVE").notNull(),
+    type: unitTypeEnum("type").default("WAREHOUSE").notNull(),
+    addressId: integer("address_id")
       .notNull()
       .references(() => addressTable.id),
-    created_at: timestamp().defaultNow().notNull(),
-    updated_at: timestamp().defaultNow().notNull(),
-    deleted_at: timestamp(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
+    deletedAt: timestamp("deleted_at"),
   },
-  (table) => [unique("units_address_unique").on(table.address_id)],
+  (table) => [
+    unique("units_address_unique").on(table.addressId),
+    check("total_capacity_not_negative", sql`${table.totalCapacity} >= 0`),
+  ],
 );
 
-export const unitRelations = relations(unitTable, ({ many, one }) => ({
-  userUnits: many(userUnitTable),
+export const unitRelations = relations(unitTable, ({ one }) => ({
   address: one(addressTable, {
-    fields: [unitTable.address_id],
+    fields: [unitTable.addressId],
     references: [addressTable.id],
   }),
 }));
