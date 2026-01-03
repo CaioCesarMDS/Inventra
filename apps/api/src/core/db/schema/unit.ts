@@ -8,17 +8,14 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { addressTable } from "@/db/schema/address";
-import { statusEnum, unitTypeEnum } from "@/db/schema/enums";
+import { addressTable } from "@/core/db/schema/address";
+import { statusEnum, unitTypeEnum } from "@/core/db/schema/enums";
 
 export const unitTable = pgTable(
   "units",
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    publicId: uuid("public_id")
-      .notNull()
-      .$defaultFn(() => sql`gen_random_uuid()`)
-      .unique(),
+    publicId: uuid("public_id").defaultRandom().notNull().unique(),
     name: varchar("name", { length: 255 }).notNull(),
     code: varchar("code", { length: 10 }).notNull().unique(),
     contactPhone: varchar("contact_phone", { length: 15 }).notNull(),

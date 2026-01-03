@@ -13,10 +13,7 @@ export const productTable = pgTable(
   "products",
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    publicId: uuid("public_id")
-      .notNull()
-      .$defaultFn(() => sql`gen_random_uuid()`)
-      .unique(),
+    publicId: uuid("public_id").defaultRandom().notNull().unique(),
     sku: varchar("sku", { length: 64 }).notNull().unique(),
     name: varchar("name", { length: 128 }).notNull(),
     description: varchar("description", { length: 255 }),

@@ -1,2 +1,2 @@
 export * from "./common";
-export * from "./domain/user";
+export * from "./domains/user";

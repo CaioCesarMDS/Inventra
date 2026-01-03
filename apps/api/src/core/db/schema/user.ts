@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import {
   integer,
   pgTable,
@@ -6,14 +5,11 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { statusEnum, userRoleEnum } from "@/db/schema/enums";
+import { statusEnum, userRoleEnum } from "@/core/db/schema/enums";
 
 export const userTable = pgTable("users", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  publicId: uuid("public_id")
-    .notNull()
-    .$defaultFn(() => sql`gen_random_uuid()`)
-    .unique(),
+  publicId: uuid("public_id").defaultRandom().notNull().unique(),
   name: varchar("name", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 15 }).notNull().unique(),
   email: varchar("email", { length: 255 }).notNull().unique(),

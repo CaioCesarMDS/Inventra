@@ -10,19 +10,16 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { movementTypeEnum } from "@/db/schema/enums";
-import { productTable } from "@/db/schema/product";
-import { unitTable } from "@/db/schema/unit";
-import { userTable } from "@/db/schema/user";
+import { movementTypeEnum } from "@/core/db/schema/enums";
+import { productTable } from "@/core/db/schema/product";
+import { unitTable } from "@/core/db/schema/unit";
+import { userTable } from "@/core/db/schema/user";
 
 export const stockMovementsTable = pgTable(
   "stock_movements",
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    publicId: uuid("public_id")
-      .notNull()
-      .$defaultFn(() => sql`gen_random_uuid()`)
-      .unique(),
+    publicId: uuid("public_id").defaultRandom().notNull().unique(),
     idempotencyKey: varchar("idempotency_key", { length: 255 }),
     type: movementTypeEnum("type").notNull(),
     description: varchar("description", { length: 255 }),

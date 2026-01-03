@@ -7,8 +7,8 @@ import {
   primaryKey,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { productTable } from "@/db/schema/product";
-import { unitTable } from "@/db/schema/unit";
+import { productTable } from "@/core/db/schema/product";
+import { unitTable } from "@/core/db/schema/unit";
 
 export const productStockTable = pgTable(
   "product_stocks",
