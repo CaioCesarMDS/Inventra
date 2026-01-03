@@ -11,7 +11,19 @@ import {
 } from "fastify-type-provider-zod";
 
 export function buildApp(): ReturnType<typeof fastify> {
-  const app = fastify().withTypeProvider<ZodTypeProvider>();
+  const app = fastify({
+    logger: {
+      level: "debug",
+      transport: {
+        target: "pino-pretty",
+        options: {
+          colorize: true,
+          translateTime: "HH:MM:ss",
+          ignore: "pid,hostname",
+        },
+      },
+    },
+  }).withTypeProvider<ZodTypeProvider>();
 
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
