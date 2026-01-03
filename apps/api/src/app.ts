@@ -1,3 +1,4 @@
+import { errorHandler } from "@/core/middlewares/error-handler";
 import { userPlugin } from "@/domains/user/user.plugin";
 import { fastifyCors } from "@fastify/cors";
 import { fastifySwagger } from "@fastify/swagger";
@@ -27,6 +28,8 @@ export function buildApp(): ReturnType<typeof fastify> {
 
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
+
+  app.setErrorHandler(errorHandler);
 
   app.register(fastifyCors, {
     origin: true,
