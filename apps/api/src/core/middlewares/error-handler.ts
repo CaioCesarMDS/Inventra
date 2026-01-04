@@ -45,8 +45,12 @@ export const errorHandler: FastifyInstance["errorHandler"] = (
 
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
-      code: error.statusCode,
-      message: error.message,
+      error: {
+        code: error.code ?? `http_${error.statusCode}`,
+        field: error.field ?? null,
+        message: error.message,
+        details: error.details ?? undefined,
+      },
     });
   }
 
