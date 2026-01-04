@@ -1,15 +1,12 @@
-import type { UserRequest } from "@inventra/shared";
-import type { FastifyReply, FastifyRequest } from "fastify";
+import type { UserRequest, UserResponse } from "@inventra/shared";
+
 import type { userTable } from "@/core/db/schema/user";
 
 export type User = typeof userTable.$inferSelect;
 export type NewUser = typeof userTable.$inferInsert;
 
 export interface IUserController {
-  create: (
-    request: FastifyRequest<{ Body: UserRequest }>,
-    reply: FastifyReply,
-  ) => Promise<void>;
+  create: (data: UserRequest) => Promise<UserResponse>;
 }
 
 export interface IUserService {
