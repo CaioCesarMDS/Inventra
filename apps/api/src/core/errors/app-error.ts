@@ -16,6 +16,7 @@ export class AppError extends Error {
     this.code = code;
     this.field = field;
     this.details = details;
-    this.name = "AppError";
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
   }
 }

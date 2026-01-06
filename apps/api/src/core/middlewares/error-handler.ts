@@ -11,7 +11,9 @@ export const errorHandler: FastifyInstance["errorHandler"] = (
   request,
   reply,
 ) => {
-  if (hasZodFastifySchemaValidationErrors(error)) {
+  const isObject = typeof error === "object" && error !== null;
+
+  if (isObject && hasZodFastifySchemaValidationErrors(error)) {
     const uniqueIssues = new Map<
       string,
       { path: string; message: string | undefined }
@@ -45,16 +47,15 @@ export const errorHandler: FastifyInstance["errorHandler"] = (
 
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
-      error: {
-        code: error.code ?? `http_${error.statusCode}`,
-        field: error.field ?? null,
-        message: error.message,
-        details: error.details ?? undefined,
-      },
+      message: error.message,
+      statusCode: error.statusCode,
+      code: error.code,
+      field: error.field,
+      details: error.details,
     });
   }
 
-  if (isResponseSerializationError(error)) {
+  if (isObject && isResponseSerializationError(error)) {
     request.log.error(
       {
         issues: error.cause.issues,
@@ -69,17 +70,14 @@ export const errorHandler: FastifyInstance["errorHandler"] = (
     });
   }
 
-  if (error instanceof Error) {
-    request.log.error(
-      { err: error, method: request.method, url: request.url },
-      "Unexpected error",
-    );
-  } else {
-    request.log.error(
-      { thrown: error, method: request.method, url: request.url },
-      "Unexpected non-error thrown",
-    );
-  }
+  request.log.error(
+    {
+      err: error instanceof Error ? error : new Error(String(error)),
+      method: request.method,
+      url: request.url,
+    },
+    "Unexpected error",
+  );
 
   return reply.status(500).send({
     message: "Internal server error",
