@@ -1,5 +1,3 @@
-import { errorHandler } from "@/core/middlewares/error-handler";
-import { userPlugin } from "@/domains/user/user.plugin";
 import { fastifyCors } from "@fastify/cors";
 import { fastifySwagger } from "@fastify/swagger";
 import ScalarApiReference from "@scalar/fastify-api-reference";
@@ -10,19 +8,28 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { errorHandler } from "@/core/middlewares/error-handler";
+import { userPlugin } from "@/domains/user/user.plugin";
+import { env } from "@/env";
 
 export function buildApp(): ReturnType<typeof fastify> {
+  const isDev = env.NODE_ENV === "development";
+
   const app = fastify({
     logger: {
-      level: "debug",
-      transport: {
-        target: "pino-pretty",
-        options: {
-          colorize: true,
-          translateTime: "HH:MM:ss",
-          ignore: "pid,hostname",
-        },
-      },
+      level: isDev ? "info" : "debug",
+      ...(isDev
+        ? {
+            transport: {
+              target: "pino-pretty",
+              options: {
+                colorize: true,
+                translateTime: "yyyy-mm-dd HH:MM:ss",
+                ignore: "pid,hostname",
+              },
+            },
+          }
+        : {}),
     },
   }).withTypeProvider<ZodTypeProvider>();
 
