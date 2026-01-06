@@ -13,6 +13,8 @@ export interface IUserService {
   create(data: UserRequest): Promise<Omit<User, "password">>;
 }
 
+export type PasswordHasher = (password: string) => Promise<string>;
+
 export interface IUsersRepository {
   findById(publicId: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
