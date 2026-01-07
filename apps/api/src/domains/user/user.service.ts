@@ -1,17 +1,18 @@
-import type { UserRequest } from "@inventra/shared";
 import { ConflictError } from "@/core/errors/";
 import type {
+  CreateUserDto,
   IUserService,
   IUsersRepository,
   PasswordHasher,
-  User,
+  UserDto,
 } from "@/domains/user/user.types";
+import { UserMapper } from "@/domains/user/user.utils";
 
 export const userService = (
   repository: IUsersRepository,
   hashPassword: PasswordHasher,
 ): IUserService => ({
-  async create(data: UserRequest): Promise<Omit<User, "password">> {
+  async create(data: CreateUserDto): Promise<UserDto> {
     const [phoneExists, emailExists] = await Promise.all([
       repository.findByPhone(data.phone),
       repository.findByEmail(data.email),
@@ -32,11 +33,10 @@ export const userService = (
 
     const hashedPassword = await hashPassword(data.password);
 
-    const user = await repository.create({
-      ...data,
-      password: hashedPassword,
-    });
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    const newUser = UserMapper.toPersistence(data, hashedPassword);
+
+    const user = await repository.create(newUser);
+
+    return UserMapper.toDto(user);
   },
 });
