@@ -11,9 +11,6 @@ export const userPlugin: FastifyPluginAsync = async (
 ) => {
   const passwordHasher: PasswordHasher = async (password) => hash(password);
 
-  console.log("Password Hasher:", passwordHasher);
-  console.log("Password Hasher Type:", typeof passwordHasher);
-
   const service = userService(userRepository, passwordHasher);
   const controller = userController(service);
 

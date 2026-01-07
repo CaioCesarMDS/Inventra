@@ -1,29 +1,29 @@
 {
-	"name": "inventra",
-	"version": "1.0.0",
-	"private": true,
-	"description": "Open-source inventory management platform focused on real-time tracking, reporting, and scalable business operations.",
-	"author": "Caio Cesar",
-	"license": "ISC",
-	"packageManager": "pnpm@10.26.2",
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"argon2",
-			"esbuild"
-		]
-	},
-	"scripts": {
-		"dev": "pnpm -r dev",
-		"build": "pnpm -r build",
-		"lint": "biome check --write .",
-		"knip": "knip",
-		"knip:report": "knip --include exports,types",
-		"check": "pnpm lint && pnpm knip:report"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "2.3.10",
-		"@types/node": "^25.0.3",
-		"knip": "^5.78.0",
-		"typescript": "^5.9.3"
-	}
+  "name": "inventra",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Open-source inventory management platform focused on real-time tracking, reporting, and scalable business operations.",
+  "author": "Caio Cesar",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "argon2",
+      "esbuild"
+    ]
+  },
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "lint": "biome check --write .",
+    "knip": "knip",
+    "knip:report": "knip --include exports,types",
+    "check": "pnpm lint && pnpm knip:report"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.10",
+    "@types/node": "^25.0.3",
+    "knip": "^5.78.0",
+    "typescript": "^5.9.3"
+  }
 }

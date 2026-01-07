@@ -1,24 +1,24 @@
 {
-	"$schema": "https://unpkg.com/knip@5/schema.json",
-	"ignoreExportsUsedInFile": true,
-	"ignoreDependencies": [
-		"lucide-react",
-		"class-variance-authority",
-		"tailwind-merge",
-		"clsx"
-	],
-	"tags": ["-lintignore"],
-	"workspaces": {
-		"apps/api": {
-			"project": ["src/**/*.ts!"],
-			"ignore": ["drizzle.config.ts"],
-			"drizzle": false
-		},
-		"apps/web": {
-			"project": ["src/**/*.{ts,tsx}!"]
-		},
-		"packages/shared": {
-			"project": ["src/**/*.ts!"]
-		}
-	}
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": [
+    "lucide-react",
+    "class-variance-authority",
+    "tailwind-merge",
+    "clsx"
+  ],
+  "tags": ["-lintignore"],
+  "workspaces": {
+    "apps/api": {
+      "project": ["src/**/*.ts!"],
+      "ignore": ["drizzle.config.ts"],
+      "drizzle": false
+    },
+    "apps/web": {
+      "project": ["src/**/*.{ts,tsx}!"]
+    },
+    "packages/shared": {
+      "project": ["src/**/*.ts!"]
+    }
+  }
 }
