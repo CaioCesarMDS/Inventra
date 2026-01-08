@@ -1,0 +1,29 @@
+import type { SignOptions } from "@fastify/jwt";
+import type { LoginRequest, LoginResponse } from "@inventra/shared";
+
+export type LoginRequestDto = LoginRequest;
+export type LoginResponseDto = LoginResponse;
+
+export interface IAuthController {
+  login(data: LoginRequestDto): Promise<LoginResponseDto>;
+}
+
+export interface IAuthService {
+  login(data: LoginRequestDto): Promise<LoginResponseDto>;
+}
+
+export type PasswordVerifier = (
+  userPassword: string,
+  password: string,
+) => Promise<boolean>;
+
+export interface AuthTokenPayload {
+  sub: string;
+  role: string;
+  [key: string]: unknown;
+}
+
+export type JwtSigner = (
+  payload: AuthTokenPayload,
+  options?: SignOptions,
+) => Promise<string>;

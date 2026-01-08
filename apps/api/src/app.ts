@@ -9,6 +9,7 @@ import {
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import { errorHandler } from "@/core/middlewares/error-handler";
+import { authPlugin } from "@/domains/auth/auth.plugin";
 import { userPlugin } from "@/domains/user/user.plugin";
 import { env } from "@/env";
 
@@ -20,15 +21,15 @@ export function buildApp(): ReturnType<typeof fastify> {
       level: isDev ? "info" : "debug",
       ...(isDev
         ? {
-            transport: {
-              target: "pino-pretty",
-              options: {
-                colorize: true,
-                translateTime: "yyyy-mm-dd HH:MM:ss",
-                ignore: "pid,hostname",
-              },
+          transport: {
+            target: "pino-pretty",
+            options: {
+              colorize: true,
+              translateTime: "yyyy-mm-dd HH:MM:ss",
+              ignore: "pid,hostname",
             },
-          }
+          },
+        }
         : {}),
     },
   }).withTypeProvider<ZodTypeProvider>();
@@ -60,6 +61,7 @@ export function buildApp(): ReturnType<typeof fastify> {
   });
 
   app.register(userPlugin);
+  app.register(authPlugin);
 
   return app;
 }
