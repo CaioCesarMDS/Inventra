@@ -4,6 +4,7 @@ import {
   userResponseSchema,
 } from "@inventra/shared";
 import type { FastifyPluginAsync } from "fastify";
+import { createResponseSchema } from "@/core/http/create-response";
 import type { IUserController } from "@/domains/user/user.types";
 
 export const userRoutes = (controller: IUserController): FastifyPluginAsync => {
@@ -16,7 +17,10 @@ export const userRoutes = (controller: IUserController): FastifyPluginAsync => {
           description: "Create a new user with the provided data",
           tags: ["Users"],
           body: userRequestSchema,
-          response: { 201: userResponseSchema },
+          response: createResponseSchema(userResponseSchema, {
+            status: 201,
+            includeErrors: ["400", "409"]
+          }),
         },
       },
       async (request, reply) => {
