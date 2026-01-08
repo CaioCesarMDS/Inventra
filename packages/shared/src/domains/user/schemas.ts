@@ -1,11 +1,6 @@
 import { z } from "zod";
-import { Status } from "../common";
-
-const Role = {
-  ADMIN: "ADMIN",
-  OPERATOR: "OPERATOR",
-  VIEWER: "VIEWER",
-} as const;
+import { Status } from "../../common";
+import { Role } from "./enums";
 
 export const userRequestSchema = z.object({
   name: z
