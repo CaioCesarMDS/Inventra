@@ -1,4 +1,5 @@
 import { fastifyCors } from "@fastify/cors";
+import { fastifyJwt } from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
 import ScalarApiReference from "@scalar/fastify-api-reference";
 import { fastify } from "fastify";
@@ -60,8 +61,16 @@ export function buildApp(): ReturnType<typeof fastify> {
     routePrefix: "/docs",
   });
 
-  app.register(userPlugin);
+  app.register(fastifyJwt, {
+    secret: env.JWT_SECRET,
+    sign: { expiresIn: 15 * 60 },
+    verify: { algorithms: ["HS256"], },
+    decode: { complete: true },
+  });
+
+  // Routes
   app.register(authPlugin);
+  app.register(userPlugin);
 
   return app;
 }
