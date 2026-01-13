@@ -2,6 +2,7 @@ import {
   integer,
   pgTable,
   timestamp,
+  index,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -24,3 +25,12 @@ export const userTable = pgTable("users", {
     .$onUpdate(() => new Date()),
   deletedAt: timestamp("deleted_at"),
 });
+
+export const refreshTokensTable = pgTable("refresh_tokens", {
+  token: uuid("token").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => userTable.publicId).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
+}, (table) => [
+  index("refresh_tokens_user_id").on(table.userId),
+]);
