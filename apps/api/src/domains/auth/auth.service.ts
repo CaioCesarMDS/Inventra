@@ -5,7 +5,8 @@ import type {
   LoginRequestDto,
   LoginResponseDto,
   PasswordVerifier,
-} from "@/domains/auth/auth.type";
+} from "@/domains/auth/auth.types";
+import { AuthMapper } from "@/domains/auth/auth.utils";
 import type { IUsersRepository } from "@/domains/user/user.types";
 
 export const authService = (
@@ -31,14 +32,6 @@ export const authService = (
       role: user.role,
     });
 
-    const response = {
-      publicId: user.publicId,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      accessToken,
-    }
-
-    return response;
+    return AuthMapper.toLoginResponse(user, accessToken);
   },
 });
