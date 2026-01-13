@@ -5,7 +5,7 @@ import {
 } from "@inventra/shared";
 import type { FastifyPluginAsync } from "fastify";
 import { createResponseSchema } from "@/core/http/create-response";
-import type { IAuthController } from "@/domains/auth/auth.type";
+import type { IAuthController } from "@/domains/auth/auth.types";
 
 export const authRoutes = (controller: IAuthController): FastifyPluginAsync => {
   return async (fastify) => {

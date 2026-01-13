@@ -3,7 +3,7 @@ import type {
   IAuthService,
   LoginRequestDto,
   LoginResponseDto
-} from "@/domains/auth/auth.type";
+} from "@/domains/auth/auth.types";
 
 export const authController = (service: IAuthService): IAuthController => ({
   async login(data: LoginRequestDto): Promise<LoginResponseDto> {

@@ -31,5 +31,23 @@ export const userRoutes = (controller: IUserController): FastifyPluginAsync => {
           .send(user);
       },
     );
+    fastify.get(
+      "/me",
+      {
+        preHandler: [fastify.authenticate],
+        schema: {
+          summary: "Get current user",
+          description: "Get current user information",
+          tags: ["Auth"],
+          response: createResponseSchema(userResponseSchema, {
+            includeErrors: ["400", "401"],
+          }),
+        },
+      },
+      async (request, reply) => {
+        const user = await controller.getMe(request.user.sub);
+        return reply.status(200).send(user);
+      },
+    );
   };
 };

@@ -1,5 +1,5 @@
 import type { SignOptions } from "@fastify/jwt";
-import type { LoginRequest, LoginResponse } from "@inventra/shared";
+import type { LoginRequest, LoginResponse, Role } from "@inventra/shared";
 
 export type LoginRequestDto = LoginRequest;
 export type LoginResponseDto = LoginResponse;
@@ -19,8 +19,7 @@ export type PasswordVerifier = (
 
 export interface AuthTokenPayload {
   sub: string;
-  role: string;
-  [key: string]: unknown;
+  role: Role;
 }
 
 export type JwtSigner = (
