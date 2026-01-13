@@ -1,4 +1,4 @@
-import { ConflictError } from "@/core/errors/";
+import { ConflictError, NotFoundError } from "@/core/errors/";
 import type {
   CreateUserDto,
   IUserService,
@@ -36,6 +36,14 @@ export const userService = (
     const newUser = UserMapper.toPersistence(data, hashedPassword);
 
     const user = await repository.create(newUser);
+
+    return UserMapper.toDto(user);
+  },
+
+  async findById(id: string): Promise<UserDto> {
+    const user = await repository.findById(id);
+
+    if (!user) throw new NotFoundError("User not found");
 
     return UserMapper.toDto(user);
   },

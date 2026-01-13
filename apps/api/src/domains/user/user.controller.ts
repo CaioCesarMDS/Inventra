@@ -10,4 +10,8 @@ export const userController = (service: IUserService): IUserController => ({
     const user = await service.create(data);
     return user;
   },
+
+  async getMe(userId: string) {
+    return service.findById(userId);
+  },
 });
