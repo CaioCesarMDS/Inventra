@@ -10,6 +10,7 @@ import {
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import { errorHandler } from "@/core/middlewares/error-handler";
+import { authGuardPlugin } from "@/core/plugins/auth-guard";
 import { authPlugin } from "@/domains/auth/auth.plugin";
 import { userPlugin } from "@/domains/user/user.plugin";
 import { env } from "@/env";
@@ -53,6 +54,16 @@ export function buildApp(): ReturnType<typeof fastify> {
         description: "API for inventory management",
         version: "1.0.0",
       },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
+        }
+      },
+      security: [{ bearerAuth: [] }],
     },
     transform: jsonSchemaTransform,
   });
@@ -64,9 +75,11 @@ export function buildApp(): ReturnType<typeof fastify> {
   app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
     sign: { expiresIn: 15 * 60 },
-    verify: { algorithms: ["HS256"], },
+    verify: { algorithms: ["HS256"] },
     decode: { complete: true },
   });
+
+  app.register(authGuardPlugin);
 
   // Routes
   app.register(authPlugin);

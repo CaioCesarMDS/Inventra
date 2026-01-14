@@ -13,13 +13,13 @@ export const userRoutes = (controller: IUserController): FastifyPluginAsync => {
       "/",
       {
         schema: {
-          summary: "Create a new user",
-          description: "Create a new user with the provided data",
+          summary: "Create a user",
+          description: "Creates a new user account using the provided registration data.",
           tags: ["Users"],
           body: userRequestSchema,
           response: createResponseSchema(userResponseSchema, {
             status: 201,
-            includeErrors: ["400", "409"]
+            includeErrors: ["400", "409"],
           }),
         },
       },
@@ -36,9 +36,9 @@ export const userRoutes = (controller: IUserController): FastifyPluginAsync => {
       {
         preHandler: [fastify.authenticate],
         schema: {
-          summary: "Get current user",
-          description: "Get current user information",
-          tags: ["Auth"],
+          summary: "Get current authenticated user",
+          description: "Returns the profile information of the currently authenticated user based on the access token.",
+          tags: ["Users"],
           response: createResponseSchema(userResponseSchema, {
             includeErrors: ["400", "401"],
           }),

@@ -13,9 +13,10 @@ export const authRoutes = (controller: IAuthController): FastifyPluginAsync => {
       "/login",
       {
         schema: {
-          summary: "Login a user",
-          description: "Authenticate user using email and password",
+          summary: "Authenticate user",
+          description: "Authenticates a user using email and password and returns an access token.",
           tags: ["Auth"],
+          security: [],
           body: LoginRequestSchema,
           response: createResponseSchema(LoginResponseSchema, {
             includeErrors: ["400", "401"],
