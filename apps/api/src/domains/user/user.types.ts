@@ -1,13 +1,9 @@
-import type {
-  UserRequest,
-  UserResponse,
-} from "@inventra/shared";
+import type { UserRequest, UserResponse } from "@inventra/shared";
 
 import type { userTable } from "@/core/db/schema/user";
 
 export type User = typeof userTable.$inferSelect;
 export type NewUser = typeof userTable.$inferInsert;
-
 
 export type CreateUserDto = UserRequest;
 export type UserDto = UserResponse;

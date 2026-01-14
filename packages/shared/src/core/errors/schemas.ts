@@ -10,10 +10,12 @@ export const AppErrorSchema = z.object({
 
 export const ValidationErrorSchema = z.object({
   message: z.string(),
-  issues: z.array(z.object({
-    path: z.string(),
-    message: z.string()
-  }))
+  issues: z.array(
+    z.object({
+      path: z.string(),
+      message: z.string(),
+    }),
+  ),
 });
 
 export const UnexpectedErrorSchema = z.object({
